@@ -10,14 +10,16 @@
 #include <thread>
 #include <vector>
 #include <sstream>
+#include <cassert>
+#include "blockInMemory.hpp"
+
 
 void thread_function(int i){
     std::ostringstream oss;
     oss << "thread_function called!" << i << "\n";
     std::cout << oss.str();
 }
-
-int main(int argc, const char * argv[]) {
+void thread_call(){
     // insert code here...
     std::ostringstream oss;
     std::vector<std::thread> workers;
@@ -28,13 +30,17 @@ int main(int argc, const char * argv[]) {
         }));
     }
     /*
-    for(std::vector<std::thread>::iterator iter = workers.begin(); iter != workers.end(); iter++){
-        iter->join();
-    }*/
+     for(std::vector<std::thread>::iterator iter = workers.begin(); iter != workers.end(); iter++){
+     iter->join();
+     }*/
     for_each(workers.begin(), workers.end(), [](std::thread &th){
+        assert(th.joinable());
         th.join();
     });
     std::cout << "Hello, World!\n";
+}
+int main(int argc, const char * argv[]) {
+    call();
     return 0;
 }
 
