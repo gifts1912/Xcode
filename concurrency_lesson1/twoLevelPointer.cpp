@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-
+#include <cstdio>
 
 using namespace std;
 
@@ -55,7 +55,7 @@ int Sort02(char myArray[10][40], int num) {
     return 0;
 }
 
-int main(){
+int main02(){
     int i = 0, num = 4;
     char myArray[10][40] = {"aaaa", "bbbb", "cccc", "1111"};
     printf("dim1:%lu\n", sizeof(myArray)/sizeof(myArray[0]));
@@ -63,7 +63,68 @@ int main(){
     printf("After sorted!\n");
     Sort02(myArray, num);
     Printf02(myArray, num);
+    return 0;
+}
 
+int Sort03(char ** arr, int num) {
+    char buf[100];
+    if (arr == NULL) {
+        return -1;
+    }
+    for(int i = 0;i < num - 1; i++) {
+        for(int j = i+1; j < num; j++) {
+            if(strcmp(arr[i], arr[j]) < 0){
+               /* 
+                char *tmp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = tmp;
+                */
+                strcpy(buf, arr[i]);
+                strcpy(arr[i], arr[j]);
+                strcpy(arr[j], buf);
+            }
+        }
+    }
+    return 0;
+}
 
+void Print03(char ** arr, int num) {
+    for (int i = 0; i < num; i++) {
+        printf("%s\n", arr[i]);
+    }
+}
+
+int Free03(char ***ptr, int num) {
+    if (ptr == NULL) {
+        return -1;
+    }
+    for(int i = 0;i < num; i++) {
+        if((*ptr)[i] == NULL){
+            continue;
+        }
+        free((*ptr)[i]);
+        (*ptr)[i] = NULL;
+    }
+    free(*ptr);
+    *ptr = NULL;
+    return 0;
+}
+
+int main() {
+    int num = 5;
+    char **ptr = (char **) malloc(sizeof(char *) * num);
+    for(int i = 0; i < num; i++) {
+        ptr[i] = (char *) malloc(100 * sizeof(char));
+        sprintf(ptr[i], "%d\t%d\t%d", i+1, i+1, i+1);
+    }
+
+    printf("Before Sort\n");
+    Print03(ptr, num);
+    Sort03(ptr, num);
+    printf("After Sort\n");
+    Print03(ptr, num);
+    Free03(&ptr, num);
+    
+    
     return 0;
 }
