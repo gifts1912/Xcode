@@ -110,13 +110,31 @@ int Free03(char ***ptr, int num) {
     return 0;
 }
 
-int main() {
-    int num = 5;
-    char **ptr = (char **) malloc(sizeof(char *) * num);
-    for(int i = 0; i < num; i++) {
+char ** GetMem(int num) {
+    char **ptr;
+    ptr = (char**) malloc(num * sizeof(char *));
+    for(int i = 0;i < num; i++) {
         ptr[i] = (char *) malloc(100 * sizeof(char));
         sprintf(ptr[i], "%d\t%d\t%d", i+1, i+1, i+1);
     }
+    return ptr;
+}
+
+int GetMem(int num, char ***ptr) {
+    *ptr = (char**) malloc(num * sizeof(char*));
+    for(int i = 0; i < num; i++) {
+        (*ptr)[i] = (char*) malloc(100 * sizeof(char));
+
+        sprintf((*ptr)[i], "%d\t%d\t%d", i+1, i+1, i+1);
+    }
+    return 0;
+}
+
+int main() {
+    int num = 5;
+    char **ptr = NULL;
+   // ptr = GetMem(num);
+    GetMem(num, &ptr);
 
     printf("Before Sort\n");
     Print03(ptr, num);
